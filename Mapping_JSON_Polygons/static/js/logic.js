@@ -34,8 +34,8 @@ L.control.layers(baseMaps).addTo(map);
 light.addTo(map);
 
 // Accessing the airport GeoJSON URL
-// Accessing the Toronto neighborhoods GeoJSON URL.
-let torontoHoods = "https://raw.githubusercontent.com/<GitHub_name>/Mapping_Earthquakes/main/torontoNeighborhoods.json";
+let torontoData = "https://github.com/abeebe911/mapping_earthquakes/blob/main/torontoRoutes.json";
+
 // Create a style for the lines.
 let myStyle = {
   color: "#ffffa1",
@@ -43,8 +43,14 @@ let myStyle = {
 }
 
 // Grabbing our GeoJSON data.
-d3.json(torontoHoods).then(function(data) {
+d3.json(torontoData).then(function(data) {
     console.log(data);
   // Creating a GeoJSON layer with the retrieved data.
-  L.geoJson(data).addTo(map)
-)};
+  L.geoJson(data, {
+    style: myStyle,
+    onEachFeature: function(feature, layer) {
+      layer.bindPopUp("<h3> Airline: " + feature.properties.airline + "</h3> <hr><h3> Destination: " + feature.properties.dst + "</h3>");
+  }
+  })
+.addTo(map);
+});
